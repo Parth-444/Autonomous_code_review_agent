@@ -1,4 +1,4 @@
-
+import asyncio
 import yaml
 from typing import List
 
@@ -28,12 +28,13 @@ class DesignAnalysis(BaseModel):
 llm_with_structure = llm.with_structured_output(DesignAnalysis)
 
 
-def design_analyzer(state: AgentState):
+async def design_analyzer(state: AgentState):
+    await asyncio.sleep(6)  # Stagger request
     messages = [
         SystemMessage(content=p["system"]),
         HumanMessage(content=p["user"].format(files_content=state["files_fetched"], repo_structure=state["repo_tree"])),
     ]
 
-    response = llm_with_structure.invoke(messages)
+    response = await llm_with_structure.ainvoke(messages)
 
     return {"analysis_results": {"design": response.issues}}

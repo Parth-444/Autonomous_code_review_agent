@@ -1,6 +1,6 @@
-
+import asyncio
 import yaml
-from typing import Dict, List
+from typing import List
 
 from pydantic import BaseModel, Field
 from nodes.llm_client import llm
@@ -28,12 +28,13 @@ class ComplexityAnalysis(BaseModel):
 llm_with_structure = llm.with_structured_output(ComplexityAnalysis)
 
 
-def complexity_analyzer(state: AgentState):
+async def complexity_analyzer(state: AgentState):
+    await asyncio.sleep(2)  
     messages = [
         SystemMessage(content=p["system"]),
         HumanMessage(content=p["user"].format(files_content=state["files_fetched"])),
     ]
 
-    response = llm_with_structure.invoke(messages)
+    response = await llm_with_structure.ainvoke(messages)
 
     return {"analysis_results": {"complexity": response.issues}}

@@ -1,4 +1,4 @@
-
+import asyncio
 import yaml
 from typing import List
 
@@ -28,12 +28,13 @@ class DependencyAnalysis(BaseModel):
 llm_with_structure = llm.with_structured_output(DependencyAnalysis)
 
 
-def dependency_analyzer(state: AgentState):
+async def dependency_analyzer(state: AgentState):
+    await asyncio.sleep(8)  # Stagger request
     messages = [
         SystemMessage(content=p["system"]),
         HumanMessage(content=p["user"].format(files_content=state["files_fetched"])),
     ]
 
-    response = llm_with_structure.invoke(messages)
+    response = await llm_with_structure.ainvoke(messages)
 
     return {"analysis_results": {"dependency": response.issues}}
