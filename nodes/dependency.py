@@ -1,6 +1,6 @@
 
 import yaml
-from typing import Dict, List
+from typing import List
 
 from pydantic import BaseModel, Field
 from nodes.llm_client import llm
@@ -11,24 +11,24 @@ from graph.state import AgentState
 
 
 
-with open("prompts/complexity.yaml", "r") as f:
+with open("prompts/dependency.yaml", "r") as f:
     p = yaml.safe_load(f)
 
 
-class ComplexityIssue(BaseModel):
+class DependencyIssue(BaseModel):
     location: str = Field(description="File and function/class name where the issue exists")
-    problem: str = Field(description="Description of the complexity issue")
+    problem: str = Field(description="Description of the dependency issue")
     suggestion: str = Field(description="Concrete fix suggestion")
 
 
-class ComplexityAnalysis(BaseModel):
-    issues: List[ComplexityIssue] = Field(description="List of complexity issues found")
+class DependencyAnalysis(BaseModel):
+    issues: List[DependencyIssue] = Field(description="List of dependency issues found")
 
 
-llm_with_structure = llm.with_structured_output(ComplexityAnalysis)
+llm_with_structure = llm.with_structured_output(DependencyAnalysis)
 
 
-def complexity_analyzer(state: AgentState):
+def dependency_analyzer(state: AgentState):
     messages = [
         SystemMessage(content=p["system"]),
         HumanMessage(content=p["user"].format(files_content=state["files_fetched"])),
@@ -36,4 +36,4 @@ def complexity_analyzer(state: AgentState):
 
     response = llm_with_structure.invoke(messages)
 
-    return {"analysis_results": {"complexity": response.issues}}
+    return {"analysis_results": {"dependency": response.issues}}

@@ -1,9 +1,9 @@
-import os
+
 import yaml
 from typing import Dict
 
 from pydantic import BaseModel, Field
-from langchain_google_genai import ChatGoogleGenerativeAI
+from nodes.llm_client import llm
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from graph.state import AgentState
@@ -16,7 +16,7 @@ class AnalyzerPlan(BaseModel):
 with open("prompts/planner_decision.yaml", "r") as f:
     p = yaml.safe_load(f)
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", api_key=os.getenv("GOOGLE_API_KEY"))
+
 llm_with_structure = llm.with_structured_output(AnalyzerPlan)
 
 

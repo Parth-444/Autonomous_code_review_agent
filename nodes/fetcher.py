@@ -1,9 +1,8 @@
-import os
 import yaml
 from typing import List
 
 from pydantic import BaseModel, Field
-from langchain_google_genai import ChatGoogleGenerativeAI
+from nodes.llm_client import llm
 from langchain_core.messages import SystemMessage, HumanMessage
 
 from graph.state import AgentState
@@ -19,8 +18,6 @@ class ImportantFiles(BaseModel):
 
 
 def initiate_fetcher():
-    key = os.getenv("GOOGLE_API_KEY")
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", api_key=key)
 
     with open("prompts/important_files.yaml", "r") as f:
         p = yaml.safe_load(f)

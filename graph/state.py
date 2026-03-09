@@ -9,4 +9,7 @@ class AgentState(TypedDict):
     important_files: List
     files_fetched: Dict[str, str]
     analyzers: Dict[str, str]
-    analysis_results: Annotated[Dict[str, str], merge_dicts]
+    analysis_results: Annotated[Dict[str, List], merge_dicts]
+    critic_results: List[Dict]
+    report: str
+    self_evaluation: Dict

@@ -4,7 +4,7 @@ system: |
 
   - complexity: deeply nested code, long functions, high branching logic
   - security: API calls, auth handling, raw SQL, hardcoded strings, user inputs
-  - design: class hierarchies, repeated code patterns, tight coupling between modules
+  - design: class hierarchies, repeated code patterns, tight coupling between modules, poor repo structure and file organization
   - dependency: import statements, third party libraries, version-sensitive code
 
   Select ONLY the analyzers that are genuinely needed based on what you see in the code.
